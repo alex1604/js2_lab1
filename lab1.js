@@ -18,8 +18,7 @@ var callback = function(){
     const user = {name: username}; // WE USE THIS CONST TO GET THE USERNAME WITH USER.NAME
     let dataString = JSON.stringify( user );
     window.localStorage.setItem('user', dataString);
-    //let myDataString = localStorage.getItem('user');
-    // console.log(myDataString);
+    scrollToBottom();
   });
 
 
@@ -46,6 +45,32 @@ var callback = function(){
 
     let db = firebase.database();
     db.ref('messages/').push(object);
+    document.getElementById('message').value = '';
+  });
+
+  document.getElementById('message').addEventListener('keypress', function(event){
+    if (event.key == "Enter"){
+      let date = new Date();
+      date = String(date);
+      time = date.slice(4,10) + ', ' + date.slice(16,21);
+      let message = document.getElementById('message').value;
+      let name = JSON.parse(localStorage.getItem('user')).name;
+      console.log(time);
+      console.log(message);
+      console.log(name);
+
+      let object = {  // exempel objekt
+        name: name,
+        message: message,
+        time: time
+      };
+
+      console.log(object);
+
+      let db = firebase.database();
+      db.ref('messages/').push(object);
+      document.getElementById('message').value = '';
+    }
   });
 
   // Man prenumererar på ändringar i databasen:
@@ -85,15 +110,30 @@ var callback = function(){
     div.appendChild(div3);
 
     messages.appendChild(div);
+    scrollToBottom();
 
     };
   });
 
-  //
+//Scroll
+function scrollToBottom(){
+  let chat = document.getElementById('messages');
+   chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+}
+
+
+  /* LOG OUT eller GLÖMMA BORT NAMNET */
+  logOut.addEventListener('click', function(){
+    localStorage.removeItem('user');
+    logOut.style.opacity = '0';
+    loginPopOver.style.opacity = '1';
+    chatWindow.style.opacity = '0';
+  });
 
 
 
 
+  /**************************************/
 
 }
 window.addEventListener('load', callback);

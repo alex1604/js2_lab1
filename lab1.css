@@ -104,6 +104,7 @@ main{
   justify-content: space-around;
   align-items: flex-start;
   height:70%;
+  padding-left:1em;
 }
 #name{
   margin-left:1.5em;
