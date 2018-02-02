@@ -8,6 +8,16 @@ var callback = function(){
   let loginPopOver = document.getElementById('loginPopOver');
   let logOut = document.getElementById('logOut');
 
+  if (JSON.parse(localStorage.getItem('user')) != null || JSON.parse(localStorage.getItem('user')) != undefined){
+    console.log("I'm clicked");
+    logOut.style.opacity = '1';
+    loginPopOver.style.opacity = '0';
+    chatWindow.style.opacity = '1';
+
+    let username = JSON.parse(localStorage.getItem('user')).name;
+    scrollToBottom();
+  } else {
+
   register.addEventListener('click',function(){
     console.log("I'm clicked")
     logOut.style.opacity = '1';
@@ -20,6 +30,7 @@ var callback = function(){
     window.localStorage.setItem('user', dataString);
     scrollToBottom();
   });
+}
 
 
   // Man klickar på Send Message, skapas ett objekt som skickas till databasen:
