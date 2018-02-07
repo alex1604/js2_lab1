@@ -8,29 +8,27 @@ var callback = function(){
   let loginPopOver = document.getElementById('loginPopOver');
   let logOut = document.getElementById('logOut');
 
-  if (JSON.parse(localStorage.getItem('user')) != null || JSON.parse(localStorage.getItem('user')) != undefined){
+  if (JSON.parse(localStorage.getItem('user')) != null && JSON.parse(localStorage.getItem('user')) != undefined){
     console.log("I'm clicked");
     logOut.style.opacity = '1';
     loginPopOver.style.opacity = '0';
     chatWindow.style.opacity = '1';
 
     let username = JSON.parse(localStorage.getItem('user')).name;
-    scrollToBottom();
   } else {
 
-  register.addEventListener('click',function(){
-    console.log("I'm clicked")
-    logOut.style.opacity = '1';
-    loginPopOver.style.opacity = '0';
-    chatWindow.style.opacity = '1';
+    register.addEventListener('click',function(){
+      console.log("I'm clicked")
+      logOut.style.opacity = '1';
+      loginPopOver.style.opacity = '0';
+      chatWindow.style.opacity = '1';
 
-    let username = document.getElementById('name').value;
-    const user = {name: username}; // WE USE THIS CONST TO GET THE USERNAME WITH USER.NAME
-    let dataString = JSON.stringify( user );
-    window.localStorage.setItem('user', dataString);
-    scrollToBottom();
-  });
-}
+      let username = document.getElementById('name').value;
+      const user = {name: username}; // WE USE THIS CONST TO GET THE USERNAME WITH USER.NAME
+      let dataString = JSON.stringify( user );
+      window.localStorage.setItem('user', dataString);
+    });
+  }
 
 
   // Man klickar på Send Message, skapas ett objekt som skickas till databasen:
@@ -93,44 +91,42 @@ var callback = function(){
     let messages = document.getElementById("messages");
 
     while (messages.firstChild) {
-    messages.removeChild(messages.firstChild);
+      messages.removeChild(messages.firstChild);
     };
+
+    let ms_list = [];
 
     for(let prop in allData) {
 
-    let ms_info = '';
-    let ms = '';
-    let div = document.createElement('div');
-    div.classList.add('ms-box');
-    let div2 = document.createElement('div');
-    div2.classList.add('ms-info');
-    let div3 = document.createElement('div');
-    let p = document.createElement('p');
-    div3.classList.add('ms');
+      let ms_info = '';
+      let ms = '';
+      let div = document.createElement('div');
+      div.classList.add('ms-box');
+      let div2 = document.createElement('div');
+      div2.classList.add('ms-info');
+      let div3 = document.createElement('div');
+      let p = document.createElement('p');
+      div3.classList.add('ms');
 
-    let obj = allData[prop];
+      let obj = allData[prop];
 
-    ms_info = obj.name + ' / ' + obj.time;
-    ms = obj.message;
+      ms_info = obj.name + ' / ' + obj.time;
+      ms = obj.message;
 
-    div2.innerHTML = ms_info;
-    p.innerHTML = ms;
-    div3.appendChild(p);
+      div2.innerHTML = ms_info;
+      p.innerHTML = ms;
+      div3.appendChild(p);
 
-    div.appendChild(div2);
-    div.appendChild(div3);
+      div.appendChild(div2);
+      div.appendChild(div3);
 
-    messages.appendChild(div);
-    scrollToBottom();
-
+      ms_list.unshift(div);
     };
-  });
 
-//Scroll
-function scrollToBottom(){
-  let chat = document.getElementById('messages');
-   chat.scrollTop = chat.scrollHeight - chat.clientHeight;
-}
+    for (let x of ms_list){
+      messages.appendChild(x);
+    }
+  });
 
 
   /* LOG OUT eller GLÖMMA BORT NAMNET */
@@ -140,11 +136,6 @@ function scrollToBottom(){
     loginPopOver.style.opacity = '1';
     chatWindow.style.opacity = '0';
   });
-
-
-
-
-  /**************************************/
 
 }
 window.addEventListener('load', callback);
